@@ -33,10 +33,10 @@
 		83A33CB71AE80CC5001ABB8E /* VaranusTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VaranusTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		83A33CBD1AE80CC5001ABB8E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		83A33CBE1AE80CC5001ABB8E /* VaranusTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaranusTests.swift; sourceTree = "<group>"; };
-		83A33CC81AE80E03001ABB8E /* KeyMonitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = KeyMonitor.swift; path = ../KeyMonitor.swift; sourceTree = "<group>"; };
-		83A33CCA1AE80EDA001ABB8E /* KeyCombo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = KeyCombo.swift; path = ../KeyCombo.swift; sourceTree = "<group>"; };
-		83A33CCC1AE80EEB001ABB8E /* EventList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EventList.swift; path = ../EventList.swift; sourceTree = "<group>"; };
-		83A33CCE1AE81122001ABB8E /* KeyComboParts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = KeyComboParts.swift; path = ../KeyComboParts.swift; sourceTree = "<group>"; };
+		83A33CC81AE80E03001ABB8E /* KeyMonitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyMonitor.swift; sourceTree = "<group>"; };
+		83A33CCA1AE80EDA001ABB8E /* KeyCombo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyCombo.swift; sourceTree = "<group>"; };
+		83A33CCC1AE80EEB001ABB8E /* EventList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventList.swift; sourceTree = "<group>"; };
+		83A33CCE1AE81122001ABB8E /* KeyComboParts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyComboParts.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -419,6 +419,7 @@
 				83A33CC41AE80CC5001ABB8E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		83A33CC51AE80CC5001ABB8E /* Build configuration list for PBXNativeTarget "VaranusTests" */ = {
 			isa = XCConfigurationList;
@@ -427,6 +428,7 @@
 				83A33CC71AE80CC5001ABB8E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
