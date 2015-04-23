@@ -11,9 +11,9 @@
 		83A33CB81AE80CC5001ABB8E /* Varanus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83A33CAC1AE80CC5001ABB8E /* Varanus.framework */; };
 		83A33CBF1AE80CC5001ABB8E /* VaranusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A33CBE1AE80CC5001ABB8E /* VaranusTests.swift */; };
 		83A33CC91AE80E03001ABB8E /* KeyMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A33CC81AE80E03001ABB8E /* KeyMonitor.swift */; };
-		83A33CCB1AE80EDA001ABB8E /* KeyCombo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A33CCA1AE80EDA001ABB8E /* KeyCombo.swift */; };
+		83A33CCB1AE80EDA001ABB8E /* KeyCombination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A33CCA1AE80EDA001ABB8E /* KeyCombination.swift */; };
 		83A33CCD1AE80EEB001ABB8E /* EventList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A33CCC1AE80EEB001ABB8E /* EventList.swift */; };
-		83A33CCF1AE81122001ABB8E /* KeyComboParts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A33CCE1AE81122001ABB8E /* KeyComboParts.swift */; };
+		83A33CCF1AE81122001ABB8E /* KeyCombinationParts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A33CCE1AE81122001ABB8E /* KeyCombinationParts.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,9 +34,9 @@
 		83A33CBD1AE80CC5001ABB8E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		83A33CBE1AE80CC5001ABB8E /* VaranusTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaranusTests.swift; sourceTree = "<group>"; };
 		83A33CC81AE80E03001ABB8E /* KeyMonitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyMonitor.swift; sourceTree = "<group>"; };
-		83A33CCA1AE80EDA001ABB8E /* KeyCombo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyCombo.swift; sourceTree = "<group>"; };
+		83A33CCA1AE80EDA001ABB8E /* KeyCombination.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyCombination.swift; sourceTree = "<group>"; };
 		83A33CCC1AE80EEB001ABB8E /* EventList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventList.swift; sourceTree = "<group>"; };
-		83A33CCE1AE81122001ABB8E /* KeyComboParts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyComboParts.swift; sourceTree = "<group>"; };
+		83A33CCE1AE81122001ABB8E /* KeyCombinationParts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyCombinationParts.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,8 +80,8 @@
 			isa = PBXGroup;
 			children = (
 				83A33CC81AE80E03001ABB8E /* KeyMonitor.swift */,
-				83A33CCA1AE80EDA001ABB8E /* KeyCombo.swift */,
-				83A33CCE1AE81122001ABB8E /* KeyComboParts.swift */,
+				83A33CCA1AE80EDA001ABB8E /* KeyCombination.swift */,
+				83A33CCE1AE81122001ABB8E /* KeyCombinationParts.swift */,
 				83A33CCC1AE80EEB001ABB8E /* EventList.swift */,
 				83A33CB11AE80CC5001ABB8E /* Varanus.h */,
 				83A33CAF1AE80CC5001ABB8E /* Supporting Files */,
@@ -222,8 +222,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				83A33CCD1AE80EEB001ABB8E /* EventList.swift in Sources */,
-				83A33CCF1AE81122001ABB8E /* KeyComboParts.swift in Sources */,
-				83A33CCB1AE80EDA001ABB8E /* KeyCombo.swift in Sources */,
+				83A33CCF1AE81122001ABB8E /* KeyCombinationParts.swift in Sources */,
+				83A33CCB1AE80EDA001ABB8E /* KeyCombination.swift in Sources */,
 				83A33CC91AE80E03001ABB8E /* KeyMonitor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

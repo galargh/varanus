@@ -29,14 +29,14 @@ class EventList {
         list.removeAll(keepCapacity: false)
     }
     
-    func matches(combo: KeyCombo) -> Bool {
+    func matches(combination: KeyCombination) -> Bool {
         // Fail fast if not enough keys pressed
-        if (combo.codes.count != list.count) {
+        if (combination.codes.count != list.count) {
             return false
         }
         for event in list {
             var matched = false
-            for code in combo.codes {
+            for code in combination.codes {
                 if event.keyCode == code {
                     matched = true
                     break
@@ -45,8 +45,8 @@ class EventList {
             if !matched {
                 return false
             }
-            for mod in combo.mods {
-                if !mod.isActive(event) {
+            for modifier in combination.modifiers {
+                if !modifier.isActiveFor(event) {
                     return false
                 }
             }
