@@ -4,7 +4,7 @@ Varanus is an OSX framework written in Swift responsible for managing both
 global and local application hotkeys.
 
 ### varanus
-The framework was named after the [Varanus] genus which monitor lizards are
+The framework was named after the [Varanus](http://en.wikipedia.org/wiki/Monitor_lizard) genus which monitor lizards are
 a part of, because, after all, the main function the framework exposes is to
 'monitor' the key down events in the system.
 
@@ -94,12 +94,14 @@ monitor.stopLocal()
 
 ### Why doesn't the global monitor work?
 After [Apple Documentation](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/EventOverview/MonitoringEvents/MonitoringEvents.html)
+
 *A global event monitor looks for user-input events dispatched to applications
 other than the one in which it is installed. The monitor cannot modify an event
 or prevent its normal delivery. And it may only monitor key events if
 accessibility is enabled or if the application is trusted for accessibility.*
 
 To enable accessibility:
+
 1. Go to Apple -> System Preferences -> Security & Privacy -> Privacy ->
 Accessibility
 2. Click the lock to make changes
