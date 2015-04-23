@@ -15,8 +15,8 @@ public class KeyMonitor {
     var dict = [KeyCombination: EventHandler]()
     
     var list: EventList
-    var globalListener: AnyObject?
-    var localListener: AnyObject?
+    var global: AnyObject?
+    var local: AnyObject?
     
     public init(lifetime: Double = 0.1) {
         list = EventList(lifetime: lifetime)
@@ -48,37 +48,37 @@ public class KeyMonitor {
             return true
     }
 
-    public func listenGlobally() -> Bool {
-        if globalListener != nil {
+    public func startGlobal() -> Bool {
+        if global != nil {
             return false
         }
-        globalListener = NSEvent.addGlobalMonitorForEventsMatchingMask(
+        global = NSEvent.addGlobalMonitorForEventsMatchingMask(
             NSEventMask.KeyDownMask, handler: globalHandler)
-        return globalListener != nil
+        return global != nil
     }
     
-    public func listenLocally() -> Bool {
-        if localListener != nil {
+    public func startLocal() -> Bool {
+        if local != nil {
             return false
         }
-        localListener = NSEvent.addLocalMonitorForEventsMatchingMask(
+        local = NSEvent.addLocalMonitorForEventsMatchingMask(
             NSEventMask.KeyDownMask, handler: localHandler)
-        return localListener != nil
+        return local != nil
     }
     
-    public func stopGlobalListener() -> Bool {
-        if globalListener == nil {
+    public func stopGlobal() -> Bool {
+        if global == nil {
             return false
         }
-        NSEvent.removeMonitor(globalListener!)
+        NSEvent.removeMonitor(global!)
         return true
     }
 
-    public func stopLocalListener() -> Bool {
-        if localListener == nil {
+    public func stopLocal() -> Bool {
+        if local == nil {
             return false
         }
-        NSEvent.removeMonitor(localListener!)
+        NSEvent.removeMonitor(local!)
         return true
     }
     
