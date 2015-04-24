@@ -72,9 +72,26 @@ To bind hotkey to the handler:
 ```swift
 monitor.bind(hotkey, to: handler)
 
-// Will return false, because hotkey is already in use
+// Will overwrite hotkey binding
 monitor.bind(hotkey, to: readOnlyHandler)
 monitor.bind(hotkey, to: eventHandler)
+```
+
+To add fallback handler:
+```swift
+// Either
+monitor.bind(nil, to: handler)
+monitor.bind(nil, to: readOnlyHandler)
+monitor.bind(nil, to: eventHandler)
+```
+
+To see the most recent key combination pressed:
+```swift
+// Last not handled combination
+// Can be used inside fallback handler to examine the combination
+let combination = monitor.currentKeyCombination()
+let modifiers = combination.modifiers
+let codes = combination.codes
 ```
 
 To start the monitor:
