@@ -17,35 +17,35 @@ public class KeyMonitor {
     var list: EventList
     var global: AnyObject?
     var local: AnyObject?
+    var fallback: EventHandler?
     
     public init(lifetime: Double = 0.1) {
         list = EventList(lifetime: lifetime)
     }
     
-    public func bind(combination: KeyCombination, to handler: Handler) -> Bool {
+    public func bind(combination: KeyCombination?, to handler: Handler) {
         func eventHandler(event: NSEvent!) -> NSEvent! {
             handler()
             return event
         }
-        return bind(combination, to: eventHandler)
+        bind(combination, to: eventHandler)
     }
     
-    public func bind(combination: KeyCombination,
-        to handler: ReadOnlyHandler) -> Bool {
+    public func bind(combination: KeyCombination?,
+        to handler: ReadOnlyHandler) {
             func eventHandler(event: NSEvent!) -> NSEvent! {
                 handler(event)
                 return event
             }
-            return bind(combination, to: eventHandler)
+            bind(combination, to: eventHandler)
     }
     
-    public func bind(combination: KeyCombination,
-        to handler: EventHandler) -> Bool {
-            if dict[combination] != nil {
-                return false
-            }
-            dict[combination] = handler
-            return true
+    public func bind(combination: KeyCombination?, to handler: EventHandler) {
+        if let defined = combination {
+            dict[defined] = handler
+        } else {
+            fallback = handler
+        }
     }
 
     public func startGlobal() -> Bool {
@@ -82,6 +82,10 @@ public class KeyMonitor {
         return true
     }
     
+    public func currentKeyCombination() -> KeyCombination {
+        return list.keyCombination()
+    }
+
     func handlerFor(event: NSEvent!) -> EventHandler? {
         list.add(event)
         for combinationHandler in dict {
@@ -95,12 +99,16 @@ public class KeyMonitor {
     func globalHandler(event: NSEvent!) {
         if let handler = handlerFor(event) {
             handler(event)
+        } else if let defined = fallback {
+            defined(event)
         }
     }
     
     func localHandler(event: NSEvent!) -> NSEvent! {
         if let handler = handlerFor(event) {
             return handler(event)
+        } else if let defined = fallback {
+            return defined(event)
         }
         return event
     }

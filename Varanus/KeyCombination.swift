@@ -8,8 +8,8 @@
 
 public class KeyCombination {
     
-    var modifiers: Set<KeyModifier>
-    var codes: Set<KeyCode>
+    public var modifiers: Set<KeyModifier>
+    public var codes: Set<KeyCode>
     
     public init(modifiers: Set<KeyModifier>, codes: Set<KeyCode>) {
         self.modifiers = modifiers

@@ -57,4 +57,18 @@ class EventList {
         return true
     }
     
+    func keyCombination() -> KeyCombination {
+        var modifiers = Set<KeyModifier>()
+        var codes = Set<KeyCode>()
+        for event in list {
+            codes.insert(event.keyCode)
+            for modifier in KeyModifier.all {
+                if modifier.isActiveFor(event) {
+                    modifiers.insert(modifier)
+                }
+            }
+        }
+        return KeyCombination(modifiers: modifiers, codes: codes)
+    }
+
 }

@@ -12,6 +12,8 @@ public enum KeyModifier {
     
     case CapsLock, Shift, Fn, Cmd, Alt, Ctrl, Num, Help, DIM
     
+    static let all = [CapsLock, Shift, Fn, Cmd, Alt, Ctrl, Num, Help, DIM]
+
     public func isActiveFor(event: NSEvent!) -> Bool {
         switch self {
         case .CapsLock:
