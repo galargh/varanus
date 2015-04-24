@@ -34,11 +34,13 @@ class EventList {
         if (combination.codes.count != list.count) {
             return false
         }
+        var codesCopy = combination.codes
         for event in list {
             var matched = false
-            for code in combination.codes {
+            for code in codesCopy {
                 if event.keyCode == code {
                     matched = true
+                    codesCopy.remove(code)
                     break
                 }
             }
