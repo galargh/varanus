@@ -7,42 +7,29 @@
 //
 
 public typealias Handler = Void -> Void
-public typealias ReadOnlyHandler = NSEvent! -> Void
-public typealias EventHandler = NSEvent! -> NSEvent!
 
 public class KeyMonitor {
     
-    var dict = [KeyCombination: EventHandler]()
+    var dict = [KeyCombination: Handler]()
     
     var list: EventList
+    var lifetime: Double
+    var mask: NSEventMask
+
     var global: AnyObject?
     var local: AnyObject?
-    var fallback: EventHandler?
+    var fallback: Handler?
+    var timer: NSTimer?
     
-    public init(lifetime: Double = 0.1) {
+    public init(lifetime: Double = 0.1, keyDown: Bool = true) {
         list = EventList(lifetime: lifetime)
+        self.lifetime = lifetime
+        mask = keyDown ? .KeyDownMask : .KeyUpMask
     }
     
     public func bind(combination: KeyCombination?, to handler: Handler) {
-        func eventHandler(event: NSEvent!) -> NSEvent! {
-            handler()
-            return event
-        }
-        bind(combination, to: eventHandler)
-    }
-    
-    public func bind(combination: KeyCombination?,
-        to handler: ReadOnlyHandler) {
-            func eventHandler(event: NSEvent!) -> NSEvent! {
-                handler(event)
-                return event
-            }
-            bind(combination, to: eventHandler)
-    }
-    
-    public func bind(combination: KeyCombination?, to handler: EventHandler) {
-        if let defined = combination {
-            dict[defined] = handler
+        if let keyCombination = combination {
+            dict[keyCombination] = handler
         } else {
             fallback = handler
         }
@@ -52,8 +39,8 @@ public class KeyMonitor {
         if global != nil {
             return false
         }
-        global = NSEvent.addGlobalMonitorForEventsMatchingMask(
-            NSEventMask.KeyDownMask, handler: globalHandler)
+        global = NSEvent.addGlobalMonitorForEventsMatchingMask(mask,
+            handler: globalHandler)
         return global != nil
     }
     
@@ -61,8 +48,8 @@ public class KeyMonitor {
         if local != nil {
             return false
         }
-        local = NSEvent.addLocalMonitorForEventsMatchingMask(
-            NSEventMask.KeyDownMask, handler: localHandler)
+        local = NSEvent.addLocalMonitorForEventsMatchingMask(mask,
+            handler: localHandler)
         return local != nil
     }
     
@@ -86,30 +73,34 @@ public class KeyMonitor {
         return list.keyCombination()
     }
 
-    func handlerFor(event: NSEvent!) -> EventHandler? {
-        list.add(event)
-        for combinationHandler in dict {
-            if list.matches(combinationHandler.0) {
-                return combinationHandler.1
+    @objc func handleCurrentKeyCombination() {
+        for (combination, handler) in dict {
+            if list.matches(combination) {
+                handler()
+                return
             }
         }
-        return nil
-    }
-    
-    func globalHandler(event: NSEvent!) {
-        if let handler = handlerFor(event) {
-            handler(event)
-        } else if let defined = fallback {
-            defined(event)
+        if let f = fallback {
+            f()
         }
+    }
+
+    func handlerFor(event: NSEvent!) {
+        list.add(event)
+
+        // Thread-safety&handling combination when removing events from the list
+        timer?.invalidate()
+        timer = NSTimer.scheduledTimerWithTimeInterval(lifetime, target: self,
+            selector: Selector("handleCurrentKeyCombination"), userInfo: nil,
+            repeats: false)
+    }
+
+    func globalHandler(event: NSEvent!) {
+        handlerFor(event)
     }
     
     func localHandler(event: NSEvent!) -> NSEvent! {
-        if let handler = handlerFor(event) {
-            return handler(event)
-        } else if let defined = fallback {
-            return defined(event)
-        }
+        handlerFor(event)
         return event
     }
     

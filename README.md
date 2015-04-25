@@ -33,7 +33,8 @@ To create new monitor:
 // Event lifetime equals 0.1 by default
 // Event lifetime is the time that can pass between different keyDown events
 //   for them to still be considered as simultaneous
-var monitor = KeyMonitor(lifetime: 0.1)
+// Monitor reacts to KeyDown events by default
+var monitor = KeyMonitor(lifetime: 0.1, keyDown: true)
 ```
 
 To create a hotkey:
@@ -47,42 +48,20 @@ var hotkey = KeyCombination(
 
 To create a handler:
 ```swift
-// Handler which doesn't require the event
 func handler() {
 	println("Handler")
-}
-
-// Handler which reads from the event
-// If hotkey comprises of multiple key codes, the event will be of the one
-// registered as the last one
-func readOnlyHandler(event: NSEvent!) {
-	println(event.timestamp)
-	println("Read Only Handler")
-}
-
-// Handler which modifies the event
-func eventHandler(event: NSEvent!) -> NSEvent! {
-	println("Event Handler")
-	// eg. return a different event
-	return NSEvent()
 }
 ```
 
 To bind hotkey to the handler:
 ```swift
+// Rebinding will overwrite the handler
 monitor.bind(hotkey, to: handler)
-
-// Will overwrite hotkey binding
-monitor.bind(hotkey, to: readOnlyHandler)
-monitor.bind(hotkey, to: eventHandler)
 ```
 
 To add fallback handler:
 ```swift
-// Either
 monitor.bind(nil, to: handler)
-monitor.bind(nil, to: readOnlyHandler)
-monitor.bind(nil, to: eventHandler)
 ```
 
 To see the most recent key combination pressed:
@@ -124,6 +103,22 @@ Accessibility
 2. Click the lock to make changes
 3. Enable the app you created or XCode if still in development
 
+### When does the handler gets called?
+When a new event is captured, it is added to the event list. At the same time,
+events which were in the list for more than their lifetime are removed. Now, a
+timer is set which is to call the inner handler once lifetime passes. Unless,
+new event comes in before the timer fires, then it is reset.
+
+The inner handler matches current combination against those present in the
+dictionary. If a match is found, the provided handler is called. Otherwise,
+the fallback function.
+
+Currently, some key events might be ommitted if presses span over the period
+longer than the lifetime which will be fixed by performing matching on event
+removals.
+
 ### TODO
 * removing events from the monitor
 * optimized event list
+* thread-safety
+* more accurate handler calls
