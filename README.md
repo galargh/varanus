@@ -103,7 +103,7 @@ Accessibility
 2. Click the lock to make changes
 3. Enable the app you created or XCode if still in development
 
-### When does the handler gets called?
+### When does the handler get called?
 When a new event is captured, it is added to the event list. At the same time,
 events which were in the list for more than their lifetime are removed. Now, a
 timer is set which is to call the inner handler once lifetime passes. Unless,
