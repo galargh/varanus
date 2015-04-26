@@ -9,24 +9,24 @@
 public typealias Handler = Void -> Void
 
 public class KeyMonitor {
-    
+
     var dict = [KeyCombination: Handler]()
-    
-    var list: EventList
-    var lifetime: Double
+    var list = EventList()
+    var keyCombination = KeyCombination()
+
+    var lifetime: NSTimeInterval
     var mask: NSEventMask
 
     var global: AnyObject?
     var local: AnyObject?
     var fallback: Handler?
-    var timer: NSTimer?
-    
-    public init(lifetime: Double = 0.1, keyDown: Bool = true) {
-        list = EventList(lifetime: lifetime)
+
+    public init(lifetime: NSTimeInterval = 0.1, keyDown: Bool = true) {
+        list = EventList()
         self.lifetime = lifetime
         mask = keyDown ? .KeyDownMask : .KeyUpMask
     }
-    
+
     public func bind(combination: KeyCombination?, to handler: Handler) {
         if let keyCombination = combination {
             dict[keyCombination] = handler
@@ -43,7 +43,7 @@ public class KeyMonitor {
             handler: globalHandler)
         return global != nil
     }
-    
+
     public func startLocal() -> Bool {
         if local != nil {
             return false
@@ -52,7 +52,7 @@ public class KeyMonitor {
             handler: localHandler)
         return local != nil
     }
-    
+
     public func stopGlobal() -> Bool {
         if global == nil {
             return false
@@ -68,40 +68,70 @@ public class KeyMonitor {
         NSEvent.removeMonitor(local!)
         return true
     }
-    
+
     public func currentKeyCombination() -> KeyCombination {
-        return list.keyCombination()
+        return keyCombination
     }
 
-    @objc func handleCurrentKeyCombination() {
-        for (combination, handler) in dict {
-            if list.matches(combination) {
-                handler()
-                return
-            }
-        }
-        if let f = fallback {
-            f()
+    func match() {
+        if let handler = dict[keyCombination] {
+            list.removeAll()
+            handler()
+        } else if let handler = fallback {
+            println(keyCombination)
+            handler()
         }
     }
 
-    func handlerFor(event: NSEvent!) {
+    func matchUntilEmpty() {
+        keyCombination = list.joinedKeyCombination()
+        while !list.isEmpty() {
+            match()
+            keyCombination.remove(list.currentKeyCombination()!)
+            list.remove()
+        }
+    }
+
+    func remove() {
+        if !list.isEmpty() {
+            matchUntilEmpty()
+        }
+    }
+
+    @objc func syncedRemove() {
+        sync {
+            self.remove()
+        }
+    }
+
+    func add(event: NSEvent!) {
+        if list.hasDifferent(KeyCombination(event: event).modifiers) {
+            matchUntilEmpty()
+        }
         list.add(event)
+        NSTimer.scheduledTimerWithTimeInterval(lifetime, target: self,
+            selector: Selector("syncedRemove"), userInfo: nil, repeats: false)
+    }
 
-        // Thread-safety&handling combination when removing events from the list
-        timer?.invalidate()
-        timer = NSTimer.scheduledTimerWithTimeInterval(lifetime, target: self,
-            selector: Selector("handleCurrentKeyCombination"), userInfo: nil,
-            repeats: false)
+    func syncedAdd(event: NSEvent!) {
+        sync {
+            self.add(event)
+        }
     }
 
     func globalHandler(event: NSEvent!) {
-        handlerFor(event)
+        syncedAdd(event)
     }
-    
+
     func localHandler(event: NSEvent!) -> NSEvent! {
-        handlerFor(event)
+        syncedAdd(event)
         return event
     }
-    
+
+    func sync(closure: () -> ()) {
+        objc_sync_enter(self)
+        closure()
+        objc_sync_exit(self)
+    }
+
 }

@@ -8,46 +8,62 @@
 
 public typealias KeyCode = UInt16
 
-public enum KeyModifier {
+public enum KeyModifier: Printable {
+
+    public var description: String {
+        switch self {
+        case .CapsLock:
+            return "CapsLock"
+        case .Shift:
+            return "Shift"
+        case .Fn:
+            return "Fn"
+        case .Cmd:
+            return "Cmd"
+        case .Alt:
+            return "Alt"
+        case .Ctrl:
+            return "Ctrl"
+        case .Num:
+            return "Num"
+        case .Help:
+            return "Help"
+        case .DIM:
+            return "DIM"
+        }
+    }
     
     case CapsLock, Shift, Fn, Cmd, Alt, Ctrl, Num, Help, DIM
     
     static let all = [CapsLock, Shift, Fn, Cmd, Alt, Ctrl, Num, Help, DIM]
 
-    public func isActiveFor(event: NSEvent!) -> Bool {
+    func isIn(flags: NSEventModifierFlags) -> Bool {
         switch self {
         case .CapsLock:
-            return isActiveFor(event,
-                with: NSEventModifierFlags.AlphaShiftKeyMask)
+            return isIn(flags, with: NSEventModifierFlags.AlphaShiftKeyMask)
         case .Shift:
-            return isActiveFor(event,
-                with: NSEventModifierFlags.ShiftKeyMask)
+            return isIn(flags, with: NSEventModifierFlags.ShiftKeyMask)
         case .Fn:
-            return isActiveFor(event,
-                with: NSEventModifierFlags.FunctionKeyMask)
+            return isIn(flags, with: NSEventModifierFlags.FunctionKeyMask)
         case .Cmd:
-            return isActiveFor(event,
-                with: NSEventModifierFlags.CommandKeyMask)
+            return isIn(flags, with: NSEventModifierFlags.CommandKeyMask)
         case .Alt:
-            return isActiveFor(event,
-                with: NSEventModifierFlags.AlternateKeyMask)
+            return isIn(flags, with: NSEventModifierFlags.AlternateKeyMask)
         case .Ctrl:
-            return isActiveFor(event,
-                with: NSEventModifierFlags.ControlKeyMask)
+            return isIn(flags, with: NSEventModifierFlags.ControlKeyMask)
         case .Num:
-            return isActiveFor(event,
-                with: NSEventModifierFlags.NumericPadKeyMask)
+            return isIn(flags, with: NSEventModifierFlags.NumericPadKeyMask)
         case .Help:
-            return isActiveFor(event,
-                with: NSEventModifierFlags.HelpKeyMask)
+            return isIn(flags, with: NSEventModifierFlags.HelpKeyMask)
         case .DIM:
-            return isActiveFor(event,
+            return isIn(flags,
                 with: NSEventModifierFlags.DeviceIndependentModifierFlagsMask)
         }
     }
     
-    func isActiveFor(event: NSEvent!, with flag: NSEventModifierFlags) -> Bool {
-        return (event.modifierFlags & flag) == flag
+    func isIn(flags: NSEventModifierFlags,
+        with flag: NSEventModifierFlags) -> Bool {
+            return (flags & flag) == flag
     }
     
 }

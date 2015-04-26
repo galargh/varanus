@@ -66,11 +66,9 @@ monitor.bind(nil, to: handler)
 
 To see the most recent key combination pressed:
 ```swift
-// Last not handled combination
-// Can be used inside fallback handler to examine the combination
 let combination = monitor.currentKeyCombination()
-let modifiers = combination.modifiers
-let codes = combination.codes
+let modifiers = combination.modifiersSet()
+let codes = combination.codesSet()
 ```
 
 To start the monitor:
@@ -104,21 +102,14 @@ Accessibility
 3. Enable the app you created or XCode if still in development
 
 ### When does the handler get called?
-When a new event is captured, it is added to the event list. At the same time,
-events which were in the list for more than their lifetime are removed. Now, a
-timer is set which is to call the inner handler once lifetime passes. Unless,
-new event comes in before the timer fires, then it is reset.
+The handler gets called when a match in the provided key combinations
+is found. Otherwise, the fallback handler is called.
 
-The inner handler matches current combination against those present in the
-dictionary. If a match is found, the provided handler is called. Otherwise,
-the fallback function.
-
-Currently, some key events might be ommitted if presses span over the period
-longer than the lifetime which will be fixed by performing matching on event
-removals.
+The matching process occurs when a new event's modifiers list doesn't match the
+modifiers in the current events list, or lifetime after the original event
+occured. If a matching handler is found, the event list is cleared and the
+handler is called. Otherwise, the events are removed one by one until the
+list is empty and the fallback is called for every step.
 
 ### TODO
 * removing events from the monitor
-* optimized event list
-* thread-safety
-* more accurate handler calls

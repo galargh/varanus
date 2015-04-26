@@ -6,69 +6,76 @@
 //  Copyright (c) 2015 Piotr Galar. All rights reserved.
 //
 
+class EventNode {
+
+    var next: EventNode?
+
+    let keyCombination: KeyCombination
+    let timestamp: NSTimeInterval
+
+    init(event: NSEvent) {
+        keyCombination = KeyCombination(event: event)
+        timestamp = event.timestamp
+    }
+    
+}
+
 class EventList {
+
+    var start: EventNode?
+    var end: EventNode?
     
-    var list = [NSEvent]()
-    var lifetime: Double
-    
-    init(lifetime: Double) {
-        self.lifetime = lifetime
-    }
-    
+    init() {}
+
     func add(event: NSEvent) {
-        //TODO: linked list for remove/add in O(1)
-        while(!list.isEmpty &&
-            list[0].timestamp.distanceTo(event.timestamp) > lifetime) {
-                
-                list.removeAtIndex(0)
+        var node = EventNode(event: event)
+        if start == nil {
+            start = node
+            end = node
+        } else {
+            end!.next = node
+            end = node
         }
-        list.append(event)
     }
     
-    func flush() {
-        list.removeAll(keepCapacity: false)
+    func remove() {
+        if start != nil {
+            start = start!.next
+        }
     }
     
-    func matches(combination: KeyCombination) -> Bool {
-        // Fail fast if not enough keys pressed
-        if (combination.codes.count != list.count) {
-            return false
-        }
-        var codesCopy = combination.codes
-        for event in list {
-            var matched = false
-            for code in codesCopy {
-                if event.keyCode == code {
-                    matched = true
-                    codesCopy.remove(code)
-                    break
-                }
-            }
-            if !matched {
-                return false
-            }
-            for modifier in combination.modifiers {
-                if !modifier.isActiveFor(event) {
-                    return false
-                }
-            }
-        }
-        self.flush()
-        return true
+    func removeAll() {
+        start = nil
+        end = nil
     }
     
-    func keyCombination() -> KeyCombination {
-        var modifiers = Set<KeyModifier>()
-        var codes = Set<KeyCode>()
-        for event in list {
-            codes.insert(event.keyCode)
-            for modifier in KeyModifier.all {
-                if modifier.isActiveFor(event) {
-                    modifiers.insert(modifier)
-                }
-            }
-        }
-        return KeyCombination(modifiers: modifiers, codes: codes)
+    func isEmpty() -> Bool {
+        return start == nil
     }
+
+    func currentKeyCombination() -> KeyCombination? {
+        return start?.keyCombination
+    }
+    
+    func joinedKeyCombination() -> KeyCombination {
+        var keyCombination = KeyCombination()
+        var node = start
+        while node != nil {
+            keyCombination.add(node!.keyCombination)
+            node = node!.next
+        }
+        return keyCombination
+    }
+
+    func hasDifferent(modifiers: Set<KeyModifier>) -> Bool {
+        return start?.keyCombination.modifiers != modifiers
+    }
+
+    /*
+    func hasOlder(than lifetime: NSTimeInterval,
+        at now: NSTimeInterval) -> Bool {
+            return start?.timestamp.distanceTo(now) > lifetime
+    }
+    */
 
 }
