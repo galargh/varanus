@@ -6,13 +6,13 @@
 //  Copyright (c) 2015 Piotr Galar. All rights reserved.
 //
 
-public typealias Handler = Void -> Void
+public typealias EmptyHandler = Void -> Void
+public typealias Handler = KeyCombination -> Void
 
 public class KeyMonitor {
 
     var dict = [KeyCombination: Handler]()
     var list = EventList()
-    var keyCombination = KeyCombination()
 
     var lifetime: NSTimeInterval
     var mask: NSEventMask
@@ -27,11 +27,26 @@ public class KeyMonitor {
         mask = keyDown ? .KeyDownMask : .KeyUpMask
     }
 
+    public func bind(combination: KeyCombination?, to handler: EmptyHandler) {
+        func wrappedHandler(keyCombination: KeyCombination) {
+            handler()
+        }
+        bind(combination, to: wrappedHandler)
+    }
+
     public func bind(combination: KeyCombination?, to handler: Handler) {
         if let keyCombination = combination {
             dict[keyCombination] = handler
         } else {
             fallback = handler
+        }
+    }
+
+    public func unbind(combination: KeyCombination?) {
+        if let keyCombination = combination {
+            dict[keyCombination] = nil
+        } else {
+            fallback = nil
         }
     }
 
@@ -69,24 +84,24 @@ public class KeyMonitor {
         return true
     }
 
-    public func currentKeyCombination() -> KeyCombination {
-        return keyCombination
-    }
-
-    func match() {
+    func match(keyCombination: KeyCombination) {
         if let handler = dict[keyCombination] {
             list.removeAll()
-            handler()
+            async {
+                handler(keyCombination)
+            }
         } else if let handler = fallback {
             println(keyCombination)
-            handler()
+            async {
+                handler(keyCombination)
+            }
         }
     }
 
     func matchUntilEmpty() {
-        keyCombination = list.joinedKeyCombination()
+        var keyCombination = list.joinedKeyCombination()
         while !list.isEmpty() {
-            match()
+            match(keyCombination)
             keyCombination.remove(list.currentKeyCombination()!)
             list.remove()
         }
@@ -132,6 +147,12 @@ public class KeyMonitor {
         objc_sync_enter(self)
         closure()
         objc_sync_exit(self)
+    }
+
+    func async(closure: () -> ()) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+            closure()
+        }
     }
 
 }

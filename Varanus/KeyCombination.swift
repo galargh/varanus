@@ -55,7 +55,7 @@ public class KeyCombination: Printable {
     }
 
     func add(keyCombination: KeyCombination) {
-        //modifiers.unionInPlace(keyCombination.modifiers)
+        modifiers.unionInPlace(keyCombination.modifiers)
         codes.unionInPlace(keyCombination.codes)
     }
 

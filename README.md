@@ -48,7 +48,13 @@ var hotkey = KeyCombination(
 
 To create a handler:
 ```swift
-func handler() {
+func handler(combination: KeyCombination) {
+	let modifiers = combination.modifiersSet()
+	let codes = combination.codesSet()
+	println(combination)
+}
+// Or
+func emptyHandler() {
 	println("Handler")
 }
 ```
@@ -64,11 +70,11 @@ To add fallback handler:
 monitor.bind(nil, to: handler)
 ```
 
-To see the most recent key combination pressed:
+To remove binding:
 ```swift
-let combination = monitor.currentKeyCombination()
-let modifiers = combination.modifiersSet()
-let codes = combination.codesSet()
+monitor.unbind(hotkey)
+// Same for fallback binding
+monitor.unbind(nil)
 ```
 
 To start the monitor:
@@ -103,7 +109,8 @@ Accessibility
 
 ### When does the handler get called?
 The handler gets called when a match in the provided key combinations
-is found. Otherwise, the fallback handler is called.
+is found. Otherwise, the fallback handler is called. Both are being called
+asynchronously.
 
 The matching process occurs when a new event's modifiers list doesn't match the
 modifiers in the current events list, or lifetime after the original event
@@ -113,3 +120,5 @@ list is empty and the fallback is called for every step.
 
 ### TODO
 * removing events from the monitor
+* validate keyCombination lifespan
+* tests
