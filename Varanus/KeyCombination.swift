@@ -9,17 +9,9 @@
 public class KeyCombination: Printable {
 
     public var description: String {
-        var modifiersString = "["
-        for modifier in modifiers {
-            modifiersString += modifier.description + ", "
-        }
-        modifiersString += "]"
-        var codesString = "["
-        for code in codes {
-            codesString += String(code) + ", "
-        }
-        codesString += "]"
-        return "{ modifiers: \(modifiersString), codes: \(codesString), }"
+        var modifiersString = Array(modifiers).map({"\($0), "})
+        var codesString = Array(codes).map({"\($0), "})
+        return "{ modifiers: [\(modifiersString)], codes: [\(codesString)], }"
     }
 
     var modifiers = Set<KeyModifier>()

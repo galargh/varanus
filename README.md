@@ -34,7 +34,7 @@ To create new monitor:
 // Event lifetime is the time that can pass between different keyDown events
 //   for them to still be considered as simultaneous
 // Monitor reacts to KeyDown events by default
-var monitor = KeyMonitor(lifetime: 0.1, keyDown: true)
+var monitor = KeyMonitor(lifetime: 0.1, mask: .Down)
 ```
 
 To create a hotkey:

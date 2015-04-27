@@ -9,23 +9,36 @@
 public typealias EmptyHandler = Void -> Void
 public typealias Handler = KeyCombination -> Void
 
-public class KeyMonitor {
+public enum KeyMask {
 
+    case Up, Down
+
+    func toEventMask() -> NSEventMask {
+        switch self {
+        case .Up:
+            return .KeyUpMask
+        case .Down:
+            return .KeyDownMask
+        }
+    }
+
+}
+
+public class KeyMonitor {
     var dict = [KeyCombination: Handler]()
     var list = EventList()
 
-    var lifetime: NSTimeInterval
-    var mask: NSEventMask
+    let lifetime: NSTimeInterval
+    let mask: NSEventMask
 
     var global: AnyObject?
     var local: AnyObject?
     var fallback: Handler?
     var timer: NSTimer?
 
-    public init(lifetime: NSTimeInterval = 0.1, keyDown: Bool = true) {
-        list = EventList()
+    public init(lifetime: NSTimeInterval = 0.1, mask: KeyMask = .Down) {
         self.lifetime = lifetime
-        mask = keyDown ? .KeyDownMask : .KeyUpMask
+        self.mask = mask.toEventMask()
     }
 
     public func bind(combination: KeyCombination?, to handler: EmptyHandler) {
@@ -92,7 +105,6 @@ public class KeyMonitor {
                 handler(keyCombination)
             }
         } else if let handler = fallback {
-            //println(keyCombination)
             async {
                 handler(keyCombination)
             }
@@ -100,7 +112,7 @@ public class KeyMonitor {
     }
 
     func matchUntilEmpty() {
-        var keyCombination = list.joinedKeyCombination()
+        let keyCombination = list.joinedKeyCombination()
         while !list.isEmpty() {
             match(keyCombination)
             keyCombination.remove(list.currentKeyCombination()!)
@@ -109,7 +121,7 @@ public class KeyMonitor {
     }
 
     func matchUntilUp(to date: NSTimeInterval) {
-        var keyCombination = list.joinedKeyCombination()
+        let keyCombination = list.joinedKeyCombination()
         while list.hasOlder(than: lifetime, at: date) {
             match(keyCombination)
             keyCombination.remove(list.currentKeyCombination()!)
