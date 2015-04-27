@@ -20,6 +20,7 @@ public class KeyMonitor {
     var global: AnyObject?
     var local: AnyObject?
     var fallback: Handler?
+    var timer: NSTimer?
 
     public init(lifetime: NSTimeInterval = 0.1, keyDown: Bool = true) {
         list = EventList()
@@ -91,7 +92,7 @@ public class KeyMonitor {
                 handler(keyCombination)
             }
         } else if let handler = fallback {
-            println(keyCombination)
+            //println(keyCombination)
             async {
                 handler(keyCombination)
             }
@@ -101,6 +102,15 @@ public class KeyMonitor {
     func matchUntilEmpty() {
         var keyCombination = list.joinedKeyCombination()
         while !list.isEmpty() {
+            match(keyCombination)
+            keyCombination.remove(list.currentKeyCombination()!)
+            list.remove()
+        }
+    }
+
+    func matchUntilUp(to date: NSTimeInterval) {
+        var keyCombination = list.joinedKeyCombination()
+        while list.hasOlder(than: lifetime, at: date) {
             match(keyCombination)
             keyCombination.remove(list.currentKeyCombination()!)
             list.remove()
@@ -120,11 +130,15 @@ public class KeyMonitor {
     }
 
     func add(event: NSEvent!) {
+        timer?.invalidate()
         if list.hasDifferent(KeyCombination(event: event).modifiers) {
             matchUntilEmpty()
         }
+        if list.hasOlder(than: lifetime, at: event.timestamp) {
+            matchUntilUp(to: event.timestamp)
+        }
         list.add(event)
-        NSTimer.scheduledTimerWithTimeInterval(lifetime, target: self,
+        timer = NSTimer.scheduledTimerWithTimeInterval(lifetime, target: self,
             selector: Selector("syncedRemove"), userInfo: nil, repeats: false)
     }
 

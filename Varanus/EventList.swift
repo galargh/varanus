@@ -71,11 +71,9 @@ class EventList {
         return start?.keyCombination.modifiers != modifiers
     }
 
-    /*
     func hasOlder(than lifetime: NSTimeInterval,
         at now: NSTimeInterval) -> Bool {
             return start?.timestamp.distanceTo(now) > lifetime
     }
-    */
 
 }
