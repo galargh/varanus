@@ -107,18 +107,5 @@ Accessibility
 2. Click the lock to make changes
 3. Enable the app you created or XCode if still in development
 
-### When does the handler get called?
-The handler gets called when a match in the provided key combinations
-is found. Otherwise, the fallback handler is called. Both are being called
-asynchronously.
-
-The matching process occurs when a new event's modifiers list doesn't match the
-modifiers in the current events list, or lifetime after the original event
-occured. If a matching handler is found, the event list is cleared and the
-handler is called. Otherwise, the events are removed one by one until the
-list is empty and the fallback is called for every step.
-
-### TODO
-* removing events from the monitor
-* validate keyCombination lifespan
-* tests
+### TODO:
+* tests, comments, examples, how it works
