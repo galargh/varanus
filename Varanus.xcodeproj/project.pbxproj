@@ -14,6 +14,14 @@
 		83A33CCB1AE80EDA001ABB8E /* KeyCombination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A33CCA1AE80EDA001ABB8E /* KeyCombination.swift */; };
 		83A33CCD1AE80EEB001ABB8E /* EventList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A33CCC1AE80EEB001ABB8E /* EventList.swift */; };
 		83A33CCF1AE81122001ABB8E /* KeyCombinationParts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A33CCE1AE81122001ABB8E /* KeyCombinationParts.swift */; };
+		83DD5D811AEE7133008AF154 /* KeyMonitorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DD5D801AEE7133008AF154 /* KeyMonitorTests.swift */; };
+		83DD5D831AEE7140008AF154 /* KeyCombinationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DD5D821AEE7140008AF154 /* KeyCombinationTests.swift */; };
+		83DD5D851AEE714F008AF154 /* KeyCombinationPartsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DD5D841AEE714F008AF154 /* KeyCombinationPartsTests.swift */; };
+		83DD5D871AEE715C008AF154 /* EventListTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DD5D861AEE715C008AF154 /* EventListTests.swift */; };
+		83DD5D881AEE7502008AF154 /* KeyMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A33CC81AE80E03001ABB8E /* KeyMonitor.swift */; };
+		83DD5D891AEE7502008AF154 /* KeyCombination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A33CCA1AE80EDA001ABB8E /* KeyCombination.swift */; };
+		83DD5D8A1AEE7502008AF154 /* KeyCombinationParts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A33CCE1AE81122001ABB8E /* KeyCombinationParts.swift */; };
+		83DD5D8B1AEE7502008AF154 /* EventList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A33CCC1AE80EEB001ABB8E /* EventList.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,6 +45,10 @@
 		83A33CCA1AE80EDA001ABB8E /* KeyCombination.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyCombination.swift; sourceTree = "<group>"; };
 		83A33CCC1AE80EEB001ABB8E /* EventList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventList.swift; sourceTree = "<group>"; };
 		83A33CCE1AE81122001ABB8E /* KeyCombinationParts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyCombinationParts.swift; sourceTree = "<group>"; };
+		83DD5D801AEE7133008AF154 /* KeyMonitorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyMonitorTests.swift; sourceTree = "<group>"; };
+		83DD5D821AEE7140008AF154 /* KeyCombinationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyCombinationTests.swift; sourceTree = "<group>"; };
+		83DD5D841AEE714F008AF154 /* KeyCombinationPartsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyCombinationPartsTests.swift; sourceTree = "<group>"; };
+		83DD5D861AEE715C008AF154 /* EventListTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventListTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +113,10 @@
 			isa = PBXGroup;
 			children = (
 				83A33CBE1AE80CC5001ABB8E /* VaranusTests.swift */,
+				83DD5D801AEE7133008AF154 /* KeyMonitorTests.swift */,
+				83DD5D821AEE7140008AF154 /* KeyCombinationTests.swift */,
+				83DD5D841AEE714F008AF154 /* KeyCombinationPartsTests.swift */,
+				83DD5D861AEE715C008AF154 /* EventListTests.swift */,
 				83A33CBC1AE80CC5001ABB8E /* Supporting Files */,
 			);
 			path = VaranusTests;
@@ -232,6 +248,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				83DD5D881AEE7502008AF154 /* KeyMonitor.swift in Sources */,
+				83DD5D891AEE7502008AF154 /* KeyCombination.swift in Sources */,
+				83DD5D8A1AEE7502008AF154 /* KeyCombinationParts.swift in Sources */,
+				83DD5D8B1AEE7502008AF154 /* EventList.swift in Sources */,
+				83DD5D871AEE715C008AF154 /* EventListTests.swift in Sources */,
+				83DD5D831AEE7140008AF154 /* KeyCombinationTests.swift in Sources */,
+				83DD5D811AEE7133008AF154 /* KeyMonitorTests.swift in Sources */,
+				83DD5D851AEE714F008AF154 /* KeyCombinationPartsTests.swift in Sources */,
 				83A33CBF1AE80CC5001ABB8E /* VaranusTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

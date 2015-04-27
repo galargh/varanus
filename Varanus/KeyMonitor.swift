@@ -6,6 +6,8 @@
 //  Copyright (c) 2015 Piotr Galar. All rights reserved.
 //
 
+import Cocoa
+
 public typealias EmptyHandler = Void -> Void
 public typealias Handler = KeyCombination -> Void
 
@@ -87,6 +89,7 @@ public class KeyMonitor {
             return false
         }
         NSEvent.removeMonitor(global!)
+        global = nil
         return true
     }
 
@@ -95,36 +98,37 @@ public class KeyMonitor {
             return false
         }
         NSEvent.removeMonitor(local!)
+        local = nil
         return true
     }
 
-    func match(keyCombination: KeyCombination) {
-        if let handler = dict[keyCombination] {
+    func match(combination: KeyCombination) {
+        if let handler = dict[combination] {
             list.removeAll()
             async {
-                handler(keyCombination)
+                handler(combination)
             }
         } else if let handler = fallback {
             async {
-                handler(keyCombination)
+                handler(combination)
             }
         }
     }
 
     func matchUntilEmpty() {
-        let keyCombination = list.joinedKeyCombination()
+        let combination = list.joinedCombination()
         while !list.isEmpty() {
-            match(keyCombination)
-            keyCombination.remove(list.currentKeyCombination()!)
+            match(combination)
+            combination.remove(list.currentCombination()!)
             list.remove()
         }
     }
 
     func matchUntilUp(to date: NSTimeInterval) {
-        let keyCombination = list.joinedKeyCombination()
+        let combination = list.joinedCombination()
         while list.hasOlder(than: lifetime, at: date) {
-            match(keyCombination)
-            keyCombination.remove(list.currentKeyCombination()!)
+            match(combination)
+            combination.remove(list.currentCombination()!)
             list.remove()
         }
     }

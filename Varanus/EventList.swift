@@ -6,25 +6,27 @@
 //  Copyright (c) 2015 Piotr Galar. All rights reserved.
 //
 
+import Cocoa
+
 class EventNode {
 
     var next: EventNode?
 
-    let keyCombination: KeyCombination
+    let combination: KeyCombination
     let timestamp: NSTimeInterval
 
     init(event: NSEvent) {
-        keyCombination = KeyCombination(event: event)
+        combination = KeyCombination(event: event)
         timestamp = event.timestamp
     }
-    
+
 }
 
 class EventList {
 
     var start: EventNode?
     var end: EventNode?
-    
+
     init() {}
 
     func add(event: NSEvent) {
@@ -37,38 +39,38 @@ class EventList {
             end = node
         }
     }
-    
+
     func remove() {
         if start != nil {
             start = start!.next
         }
     }
-    
+
     func removeAll() {
         start = nil
         end = nil
     }
-    
+
     func isEmpty() -> Bool {
         return start == nil
     }
 
-    func currentKeyCombination() -> KeyCombination? {
-        return start?.keyCombination
+    func currentCombination() -> KeyCombination? {
+        return start?.combination
     }
-    
-    func joinedKeyCombination() -> KeyCombination {
-        var keyCombination = KeyCombination()
+
+    func joinedCombination() -> KeyCombination {
+        var combination = KeyCombination()
         var node = start
         while node != nil {
-            keyCombination.add(node!.keyCombination)
+            combination.add(node!.combination)
             node = node!.next
         }
-        return keyCombination
+        return combination
     }
 
     func hasDifferent(modifiers: Set<KeyModifier>) -> Bool {
-        return start?.keyCombination.modifiers != modifiers
+        return start?.combination.modifiers != modifiers
     }
 
     func hasOlder(than lifetime: NSTimeInterval,

@@ -49,8 +49,8 @@ var hotkey = KeyCombination(
 To create a handler:
 ```swift
 func handler(combination: KeyCombination) {
-	let modifiers = combination.modifiersSet()
-	let codes = combination.codesSet()
+	let modifiers = combination.modifiers
+	let codes = combination.codes
 	println(combination)
 }
 // Or
@@ -108,4 +108,4 @@ Accessibility
 3. Enable the app you created or XCode if still in development
 
 ### TODO:
-* tests, comments, examples, how it works
+* comments, examples, how it works

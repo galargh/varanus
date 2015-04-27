@@ -6,35 +6,28 @@
 //  Copyright (c) 2015 Piotr Galar. All rights reserved.
 //
 
+import Cocoa
+
 public typealias KeyCode = UInt16
 
 public enum KeyModifier: Printable {
 
     public var description: String {
         switch self {
-        case .CapsLock:
-            return "CapsLock"
-        case .Shift:
-            return "Shift"
-        case .Fn:
-            return "Fn"
-        case .Cmd:
-            return "Cmd"
-        case .Alt:
-            return "Alt"
-        case .Ctrl:
-            return "Ctrl"
-        case .Num:
-            return "Num"
-        case .Help:
-            return "Help"
-        case .DIM:
-            return "DIM"
+        case .CapsLock: return "CapsLock"
+        case .Shift: return "Shift"
+        case .Fn: return "Fn"
+        case .Cmd: return "Cmd"
+        case .Alt: return "Alt"
+        case .Ctrl: return "Ctrl"
+        case .Num: return "Num"
+        case .Help: return "Help"
+        case .DIM: return "DIM"
         }
     }
-    
+
     case CapsLock, Shift, Fn, Cmd, Alt, Ctrl, Num, Help, DIM
-    
+
     static let all = [CapsLock, Shift, Fn, Cmd, Alt, Ctrl, Num, Help, DIM]
 
     func isIn(flags: NSEventModifierFlags) -> Bool {
@@ -60,11 +53,11 @@ public enum KeyModifier: Printable {
                 with: NSEventModifierFlags.DeviceIndependentModifierFlagsMask)
         }
     }
-    
+
     func isIn(flags: NSEventModifierFlags,
         with flag: NSEventModifierFlags) -> Bool {
             return (flags & flag) == flag
     }
-    
+
 }
 

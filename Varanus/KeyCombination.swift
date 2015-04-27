@@ -6,22 +6,25 @@
 //  Copyright (c) 2015 Piotr Galar. All rights reserved.
 //
 
+import Cocoa
+
 public class KeyCombination: Printable {
 
     public var description: String {
-        var modifiersString = Array(modifiers).map({"\($0), "})
-        var codesString = Array(codes).map({"\($0), "})
-        return "{ modifiers: [\(modifiersString)], codes: [\(codesString)], }"
+        var modifiersDescription = Array(modifiers).map({"\($0), "})
+        var codesDescription = Array(codes).map({"\($0), "})
+        return "{ modifiers: [\(modifiersDescription)]," +
+            " codes: [\(codesDescription)], }"
     }
 
-    var modifiers = Set<KeyModifier>()
-    var codes = Set<KeyCode>()
+    public var modifiers = Set<KeyModifier>()
+    public var codes = Set<KeyCode>()
 
     init() {}
 
-    init(keyCombination: KeyCombination) {
-        modifiers = keyCombination.modifiers
-        codes = keyCombination.codes
+    init(combination: KeyCombination) {
+        modifiers = combination.modifiers
+        codes = combination.codes
     }
 
     public init(modifiers: Set<KeyModifier>, codes: Set<KeyCode>) {
@@ -38,22 +41,14 @@ public class KeyCombination: Printable {
         codes.insert(event.keyCode)
     }
 
-    public func modifiersSet() -> Set<KeyModifier> {
-        return modifiers
+    func add(combination: KeyCombination) {
+        modifiers.unionInPlace(combination.modifiers)
+        codes.unionInPlace(combination.codes)
     }
 
-    public func codesSet() -> Set<KeyCode> {
-        return codes
-    }
-
-    func add(keyCombination: KeyCombination) {
-        modifiers.unionInPlace(keyCombination.modifiers)
-        codes.unionInPlace(keyCombination.codes)
-    }
-
-    func remove(keyCombination: KeyCombination) {
+    func remove(combination: KeyCombination) {
         //modifiers.subtractInPlace(keyCombination.modifiers)
-        codes.subtractInPlace(keyCombination.codes)
+        codes.subtractInPlace(combination.codes)
     }
 
 }
