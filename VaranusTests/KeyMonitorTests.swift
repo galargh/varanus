@@ -57,10 +57,10 @@ class KeyMonitorTests: XCTestCase {
         XCTAssertTrue(monitor.dict[combination] != nil)
     }
 
-    func testBindFallback() {
+    func testRegisterFallback() {
         let monitor = KeyMonitor()
 
-        monitor.bind(nil, to: handler)
+        monitor.register(handler)
 
         XCTAssertTrue(monitor.fallback != nil)
     }
@@ -74,11 +74,11 @@ class KeyMonitorTests: XCTestCase {
         XCTAssertTrue(monitor.dict[combination] == nil)
     }
 
-    func testUnbindFallback() {
+    func testUnregisterFallback() {
         let monitor = KeyMonitor()
-        monitor.bind(nil, to: handler)
+        monitor.register(handler)
 
-        monitor.unbind(nil)
+        monitor.unregister()
 
         XCTAssertTrue(monitor.fallback == nil)
     }

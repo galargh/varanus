@@ -8,6 +8,7 @@
 
 import Cocoa
 
+/// A key combination representing pressed keys and modifiers.
 public class KeyCombination: Printable {
 
     public var description: String {
@@ -17,7 +18,10 @@ public class KeyCombination: Printable {
             " codes: [\(codesDescription)], }"
     }
 
+    /// A set of modifiers.
     public var modifiers = Set<KeyModifier>()
+
+    /// A set of key codes.
     public var codes = Set<KeyCode>()
 
     init() {}
@@ -27,6 +31,10 @@ public class KeyCombination: Printable {
         codes = combination.codes
     }
 
+    /// Initialises a key combination object.
+    ///
+    /// :param: modifiers A set of modifiers for this combination.
+    /// :param: codes A set of key codes for this combination.
     public init(modifiers: Set<KeyModifier>, codes: Set<KeyCode>) {
         self.modifiers = modifiers
         self.codes = codes
@@ -55,12 +63,14 @@ public class KeyCombination: Printable {
 
 extension KeyCombination: Hashable {
 
+    /// Hash value for the combination equal to the xor of the components.
     public var hashValue: Int {
         return modifiers.hashValue ^ codes.hashValue
     }
 
 }
 
+/// Equality function defined over the components for the combination.
 public func ==(left: KeyCombination, right: KeyCombination) -> Bool {
     return left.modifiers == right.modifiers && left.codes == right.codes
 }

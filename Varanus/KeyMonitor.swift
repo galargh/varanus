@@ -8,25 +8,32 @@
 
 import Cocoa
 
+/// A Void -> Void handler.
 public typealias EmptyHandler = Void -> Void
+
+/// A KeyCombination -> Void handler.
 public typealias Handler = KeyCombination -> Void
 
+/// A subset of NSEventMask related to key events.
+///
+/// - Up: a key up mask
+/// - Down: a key down mask
 public enum KeyMask {
 
     case Up, Down
 
     func toEventMask() -> NSEventMask {
         switch self {
-        case .Up:
-            return .KeyUpMask
-        case .Down:
-            return .KeyDownMask
+        case .Up: return .KeyUpMask
+        case .Down: return .KeyDownMask
         }
     }
 
 }
 
+/// A monitor for both global and local key down or up events
 public class KeyMonitor {
+
     var dict = [KeyCombination: Handler]()
     var list = EventList()
 
@@ -38,34 +45,68 @@ public class KeyMonitor {
     var fallback: Handler?
     var timer: NSTimer?
 
+    /// Initialises a key monitor object.
+    ///
+    /// :param: lifetime A time interval specifying how long a key event should
+    ///   be kept alive and considered a part of the current key combination.
+    /// :param: mask A key event mask specyfying wether KeyDown or KeyUp events
+    ///   should be registered.
     public init(lifetime: NSTimeInterval = 0.1, mask: KeyMask = .Down) {
         self.lifetime = lifetime
         self.mask = mask.toEventMask()
     }
 
-    public func bind(combination: KeyCombination?, to handler: EmptyHandler) {
-        func wrappedHandler(keyCombination: KeyCombination) {
+    /// Binds a key combination to a void handler.
+    ///
+    /// :param: combination A key combination.
+    /// :param: handler A Void -> Void handler.
+    public func bind(combination: KeyCombination, to handler: EmptyHandler) {
+        func wrappedHandler(combination: KeyCombination) {
             handler()
         }
-        bind(combination, to: wrappedHandler)
+        dict[combination] = wrappedHandler
     }
 
-    public func bind(combination: KeyCombination?, to handler: Handler) {
-        if let keyCombination = combination {
-            dict[keyCombination] = handler
-        } else {
-            fallback = handler
+    /// Binds a key combination to a handler.
+    ///
+    /// :param: combination A key combination.
+    /// :param: handler A KeyCombination -> Void handler.
+    public func bind(combination: KeyCombination, to handler: Handler) {
+        dict[combination] = handler
+    }
+
+    /// Registers void handler as a fallback.
+    ///
+    /// :param: fallback A Void -> Void handler.
+    public func register(fallback: EmptyHandler) {
+        func wrappedFallback(combination: KeyCombination) {
+            fallback()
         }
+        self.fallback = wrappedFallback
     }
 
-    public func unbind(combination: KeyCombination?) {
-        if let keyCombination = combination {
-            dict[keyCombination] = nil
-        } else {
-            fallback = nil
-        }
+    /// Registers fallback.
+    ///
+    /// :param: fallback A KeyCombination -> Void handler.
+    public func register(fallback: Handler) {
+        self.fallback = fallback
     }
 
+    /// Unregisters fallback.
+    public func unregister() {
+        fallback = nil
+    }
+
+    /// Unbinds a key combination.
+    ///
+    /// :param: combination A key combination.
+    public func unbind(combination: KeyCombination) {
+        dict[combination] = nil
+    }
+
+    /// Starts a global key monitor.
+    ///
+    /// :returns: True if global key monitor was started; false otherwise.
     public func startGlobal() -> Bool {
         if global != nil {
             return false
@@ -75,6 +116,9 @@ public class KeyMonitor {
         return global != nil
     }
 
+    /// Starts a local key monitor.
+    ///
+    /// :returns: True if local key monitor was started; false otherwise.
     public func startLocal() -> Bool {
         if local != nil {
             return false
@@ -84,6 +128,9 @@ public class KeyMonitor {
         return local != nil
     }
 
+    /// Stops a global key monitor.
+    ///
+    /// :returns: True if global key monitor was stopped; false otherwise.
     public func stopGlobal() -> Bool {
         if global == nil {
             return false
@@ -93,6 +140,9 @@ public class KeyMonitor {
         return true
     }
 
+    /// Stops a local key monitor.
+    ///
+    /// :returns: True if local key monitor was stopped; false otherwise.
     public func stopLocal() -> Bool {
         if local == nil {
             return false

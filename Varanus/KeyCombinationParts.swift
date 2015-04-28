@@ -8,8 +8,20 @@
 
 import Cocoa
 
+/// An alias representing the key code.
 public typealias KeyCode = UInt16
 
+/// A key modifier.
+///
+/// - CapsLock
+/// - Shift
+/// - Fn
+/// - Cmd
+/// - Alt
+/// - Ctrl
+/// - Num
+/// - Help
+/// - DIM
 public enum KeyModifier: Printable {
 
     public var description: String {

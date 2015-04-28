@@ -34,13 +34,13 @@ To create new monitor:
 // Event lifetime is the time that can pass between different keyDown events
 //   for them to still be considered as simultaneous
 // Monitor reacts to KeyDown events by default
-var monitor = KeyMonitor(lifetime: 0.1, mask: .Down)
+let monitor = KeyMonitor(lifetime: 0.1, mask: .Down)
 ```
 
 To create a hotkey:
 ```swift
 // Creates a hotkey for Shift + Cmd + 'a' + 's'
-var hotkey = KeyCombination(
+let hotkey = KeyCombination(
 	modifiers: [.Shift, .Cmd],
 	codes: [0, 1]
 )
@@ -65,16 +65,19 @@ To bind hotkey to the handler:
 monitor.bind(hotkey, to: handler)
 ```
 
-To add fallback handler:
-```swift
-monitor.bind(nil, to: handler)
-```
-
 To remove binding:
 ```swift
 monitor.unbind(hotkey)
-// Same for fallback binding
-monitor.unbind(nil)
+```
+
+To add fallback handler:
+```swift
+monitor.register(handler)
+```
+
+To remove fallback handler:
+```swift
+monitor.unregister()
 ```
 
 To start the monitor:
@@ -108,4 +111,4 @@ Accessibility
 3. Enable the app you created or XCode if still in development
 
 ### TODO:
-* comments, examples, how it works
+* examples, how it works
