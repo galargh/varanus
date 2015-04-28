@@ -152,23 +152,27 @@ public class KeyMonitor {
         return true
     }
 
-    func match(combination: KeyCombination) {
+    func match(combination: KeyCombination) -> Bool {
         if let handler = dict[combination] {
-            list.removeAll()
             async {
                 handler(combination)
             }
+            return true
         } else if let handler = fallback {
             async {
                 handler(combination)
             }
         }
+        return false
     }
 
     func matchUntilEmpty() {
         let combination = list.joinedCombination()
         while !list.isEmpty() {
-            match(combination)
+            if match(combination) {
+                list.removeAll()
+                return
+            }
             combination.remove(list.currentCombination()!)
             list.remove()
         }
@@ -177,7 +181,10 @@ public class KeyMonitor {
     func matchUntilUp(to date: NSTimeInterval) {
         let combination = list.joinedCombination()
         while list.hasOlder(than: lifetime, at: date) {
-            match(combination)
+            if match(combination) {
+                list.removeAll()
+                return
+            }
             combination.remove(list.currentCombination()!)
             list.remove()
         }
