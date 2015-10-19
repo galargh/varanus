@@ -12,7 +12,8 @@ import Cocoa
 class KeyCombinationPartsTests: XCTestCase {
 
     func testModifierIsInAllFlags() {
-        let allFlags = ~NSEventModifierFlags.allZeros
+        let allFlags = NSEventModifierFlags(
+            rawValue: ~NSEventModifierFlags().rawValue)
 
         for modifier in KeyModifier.all {
 
@@ -22,7 +23,7 @@ class KeyCombinationPartsTests: XCTestCase {
     }
 
     func testModifierIsNotInAllZerosFlags() {
-        let allZerosFlags = NSEventModifierFlags.allZeros
+        let allZerosFlags = NSEventModifierFlags()
 
         for modifier in KeyModifier.all {
 

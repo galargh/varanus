@@ -30,7 +30,7 @@ class EventList {
     init() {}
 
     func add(event: NSEvent) {
-        var node = EventNode(event: event)
+        let node = EventNode(event: event)
         if start == nil {
             start = node
             end = node
@@ -60,7 +60,7 @@ class EventList {
     }
 
     func joinedCombination() -> KeyCombination {
-        var combination = KeyCombination()
+        let combination = KeyCombination()
         var node = start
         while node != nil {
             combination.add(node!.combination)

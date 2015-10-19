@@ -24,11 +24,11 @@ func ==(left: EventNode, right: EventNode) -> Bool {
 
 class EventListTests: XCTestCase {
 
-    let event = NSEvent.keyEventWithType(.KeyDown, location: .zeroPoint,
+    let event = NSEvent.keyEventWithType(.KeyDown, location: .zero,
         modifierFlags: .ShiftKeyMask, timestamp: 0.1, windowNumber: 0,
         context: nil, characters: "S", charactersIgnoringModifiers: "s",
         isARepeat: false, keyCode: 1)!
-    let otherEvent = NSEvent.keyEventWithType(.KeyDown, location: .zeroPoint,
+    let otherEvent = NSEvent.keyEventWithType(.KeyDown, location: .zero,
         modifierFlags: .CommandKeyMask, timestamp: 0.2, windowNumber: 0,
         context: nil, characters: "a", charactersIgnoringModifiers: "a",
         isARepeat: false, keyCode: 0)!

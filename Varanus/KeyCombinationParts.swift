@@ -22,7 +22,7 @@ public typealias KeyCode = UInt16
 /// - Num
 /// - Help
 /// - DIM
-public enum KeyModifier: Printable {
+public enum KeyModifier: CustomStringConvertible {
 
     public var description: String {
         switch self {
@@ -45,31 +45,25 @@ public enum KeyModifier: Printable {
     func isIn(flags: NSEventModifierFlags) -> Bool {
         switch self {
         case .CapsLock:
-            return isIn(flags, with: NSEventModifierFlags.AlphaShiftKeyMask)
+            return flags.isSupersetOf(NSEventModifierFlags.AlphaShiftKeyMask)
         case .Shift:
-            return isIn(flags, with: NSEventModifierFlags.ShiftKeyMask)
+            return flags.isSupersetOf(NSEventModifierFlags.ShiftKeyMask)
         case .Fn:
-            return isIn(flags, with: NSEventModifierFlags.FunctionKeyMask)
+            return flags.isSupersetOf(NSEventModifierFlags.FunctionKeyMask)
         case .Cmd:
-            return isIn(flags, with: NSEventModifierFlags.CommandKeyMask)
+            return flags.isSupersetOf(NSEventModifierFlags.CommandKeyMask)
         case .Alt:
-            return isIn(flags, with: NSEventModifierFlags.AlternateKeyMask)
+            return flags.isSupersetOf(NSEventModifierFlags.AlternateKeyMask)
         case .Ctrl:
-            return isIn(flags, with: NSEventModifierFlags.ControlKeyMask)
+            return flags.isSupersetOf(NSEventModifierFlags.ControlKeyMask)
         case .Num:
-            return isIn(flags, with: NSEventModifierFlags.NumericPadKeyMask)
+            return flags.isSupersetOf(NSEventModifierFlags.NumericPadKeyMask)
         case .Help:
-            return isIn(flags, with: NSEventModifierFlags.HelpKeyMask)
+            return flags.isSupersetOf(NSEventModifierFlags.HelpKeyMask)
         case .DIM:
-            return isIn(flags,
-                with: NSEventModifierFlags.DeviceIndependentModifierFlagsMask)
+            return flags.isSupersetOf(
+                NSEventModifierFlags.DeviceIndependentModifierFlagsMask)
         }
     }
 
-    func isIn(flags: NSEventModifierFlags,
-        with flag: NSEventModifierFlags) -> Bool {
-            return (flags & flag) == flag
-    }
-
 }
-

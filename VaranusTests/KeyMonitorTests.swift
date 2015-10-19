@@ -11,7 +11,7 @@ import Cocoa
 
 class KeyMonitorTests: XCTestCase {
 
-    let event = NSEvent.keyEventWithType(.KeyDown, location: .zeroPoint,
+    let event = NSEvent.keyEventWithType(.KeyDown, location: .zero,
         modifierFlags: .ShiftKeyMask, timestamp: 0.1, windowNumber: 0,
         context: nil, characters: "A", charactersIgnoringModifiers: "a",
         isARepeat: false, keyCode: 0)!

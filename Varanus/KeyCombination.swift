@@ -9,11 +9,11 @@
 import Cocoa
 
 /// A key combination representing pressed keys and modifiers.
-public class KeyCombination: Printable {
+public class KeyCombination: CustomStringConvertible {
 
     public var description: String {
-        var modifiersDescription = Array(modifiers).map({"\($0), "})
-        var codesDescription = Array(codes).map({"\($0), "})
+        let modifiersDescription = Array(modifiers).map({"\($0), "})
+        let codesDescription = Array(codes).map({"\($0), "})
         return "{ modifiers: [\(modifiersDescription)]," +
             " codes: [\(codesDescription)], }"
     }

@@ -50,7 +50,7 @@ class KeyCombinationTests: XCTestCase {
     }
 
     func testInitWithEvent() {
-        let event = NSEvent.keyEventWithType(.KeyDown, location: .zeroPoint,
+        let event = NSEvent.keyEventWithType(.KeyDown, location: .zero,
             modifierFlags: .ShiftKeyMask, timestamp: .infinity, windowNumber: 0,
             context: nil, characters: "S", charactersIgnoringModifiers: "s",
             isARepeat: false, keyCode: 1)!
